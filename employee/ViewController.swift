@@ -100,7 +100,7 @@ extension ViewController {
 }
 
 /// Get file path for write.
-func paths() -> URL {
+private func paths() -> URL {
     let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     return path[0]
 }
