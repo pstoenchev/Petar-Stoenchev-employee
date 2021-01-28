@@ -14,12 +14,16 @@ final class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      //  time()
-        test(path: "File", extensionType: "txt")
+        dateWorking(path: "File", extensionType: "txt")
     }
+}
+
+// MARK: - Definitins
+
+extension ViewController {
     
-    func test(path name: String, extensionType: String) {
-     
+    func dateWorking(path name: String, extensionType: String) {
+        
         print("(1)Id     Id(2)              Date        ")
         
         
@@ -33,8 +37,7 @@ final class ViewController: UIViewController {
             let lines = myStrings.map { $0.components(separatedBy: ", ") }
             
             var k = myStrings.count - 1
-            
-            
+             
             for line  in lines {
                 if k > 0 {
                     
@@ -55,9 +58,9 @@ final class ViewController: UIViewController {
                     dateFormatterFrom.locale = Locale(identifier: "en_US_POSIX")
                     
                     if first.contains("-" ) {
-                    dateFormatterFrom.dateFormat = "yyyy-MM-dd"
+                        dateFormatterFrom.dateFormat = "yyyy-MM-dd"
                     } else {
-                    dateFormatterFrom.dateFormat = "yyyy/MM/dd HH:mm:ss Z"
+                        dateFormatterFrom.dateFormat = "yyyy/MM/dd HH:mm:ss Z"
                     }
                     
                     let date = Date()
@@ -72,8 +75,7 @@ final class ViewController: UIViewController {
                     ///Make end date  from String  to DateFormatter
                     guard let secondDate = dateFormatterFrom.date(from: second) else { return }
                     
-                    
-                    
+                           
                     let workingInterval = Calendar.current.dateComponents([.year, .month, .day], from: firstdate, to: secondDate)
                     print("\(idFirst)        \(idSecond)        \(workingInterval)")
                     
@@ -92,13 +94,8 @@ final class ViewController: UIViewController {
     }
 }
 
-// MARK: Declarations
-
-
-    
-    /// Get file path for
-    func outpath() -> URL {
-        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return path[0]
-    }
-
+/// Get file path for wirte.
+func outpath() -> URL {
+    let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    return path[0]
+}
