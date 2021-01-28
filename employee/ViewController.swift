@@ -18,11 +18,16 @@ final class ViewController: UIViewController {
     }
 }
 
-// MARK: - Definitins
+// MARK: - Definitions
 
 extension ViewController {
     
-    func dateWorking(path name: String, extensionType: String) {
+    
+    /// Give result between two date
+    /// - Parameters:
+    ///   - name: name of File, in bundle
+    ///   - extensionType: type of file. Example `txt`
+   private func dateWorking(path name: String, extensionType: String) {
         
         print("(1)Id     Id(2)              Date        ")
         
@@ -44,7 +49,7 @@ extension ViewController {
                     /// Get id  first employee
                     let idFirst  = line[0]
                     
-                    /// Get id second emlployee
+                    /// Get id second employee
                     let idSecond = line[1]
                     
                     k = k - 1
@@ -70,16 +75,16 @@ extension ViewController {
                     }
                     
                     ///Make start date  from String  to DateFormatter
-                    guard let firstdate = dateFormatterFrom.date(from: first) else { return }
+                    guard let firstDate = dateFormatterFrom.date(from: first) else { return }
                     
                     ///Make end date  from String  to DateFormatter
                     guard let secondDate = dateFormatterFrom.date(from: second) else { return }
                     
                            
-                    let workingInterval = Calendar.current.dateComponents([.year, .month, .day], from: firstdate, to: secondDate)
+                    let workingInterval = Calendar.current.dateComponents([.year, .month, .day], from: firstDate, to: secondDate)
                     print("\(idFirst)        \(idSecond)        \(workingInterval)")
                     
-                    let writeInFile = outpath().appendingPathComponent("results.txt")
+                    let writeInFile = paths().appendingPathComponent("results.txt")
                     do {
                         try workingInterval.description.write(to: writeInFile, atomically: true, encoding: .utf8)
                     }
@@ -94,8 +99,8 @@ extension ViewController {
     }
 }
 
-/// Get file path for wirte.
-func outpath() -> URL {
+/// Get file path for write.
+func paths() -> URL {
     let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     return path[0]
 }
