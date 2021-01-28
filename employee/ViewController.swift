@@ -11,32 +11,94 @@ import UIKit
 // MARK: - Class Definition
 
 final class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        time()
-        // Do any additional setup after loading the view.
+      //  time()
+        test(path: "File", extensionType: "txt")
     }
-
-
-  private func time() {
-        if let path = Bundle.main.path(forResource: "File", ofType: "txt") {
-            do {
-                let data = try String(contentsOfFile: path, encoding: .utf8)
-                let myString = data.components(separatedBy: ",")
-                    .compactMap { $0 }
-             
-                let first = myString[2]
-                let second = myString[3]
-                print(first)
-                print(second)
+    
+    func test(path name: String, extensionType: String) {
+     
+        print("(1)Id     Id(2)              Date        ")
         
-            } catch {
+        
+        if let path = Bundle.main.url(forResource: name, withExtension: extensionType) {
             
-                print(error)
+            /// Encoding data from path
+            let data = try! String(contentsOf: path, encoding: .utf8)
+            
+            let myStrings = data.components(separatedBy: .newlines)
+            
+            let lines = myStrings.map { $0.components(separatedBy: ", ") }
+            
+            var k = myStrings.count - 1
+            
+            
+            for line  in lines {
+                if k > 0 {
+                    
+                    /// Get id  first employee
+                    let idFirst  = line[0]
+                    
+                    /// Get id second emlployee
+                    let idSecond = line[1]
+                    
+                    k = k - 1
+                    ///Get start date from File.txt
+                    let first = line[2]
+                    
+                    ///Get end date from File.txt
+                    var second = line[3]
+                    
+                    let dateFormatterFrom = DateFormatter()
+                    dateFormatterFrom.locale = Locale(identifier: "en_US_POSIX")
+                    
+                    if first.contains("-" ) {
+                    dateFormatterFrom.dateFormat = "yyyy-MM-dd"
+                    } else {
+                    dateFormatterFrom.dateFormat = "yyyy/MM/dd HH:mm:ss Z"
+                    }
+                    
+                    let date = Date()
+                    ///IF end data  NULL you can give date now.
+                    if second == "NULL" {
+                        second = dateFormatterFrom.string(from: date)
+                    }
+                    
+                    ///Make start date  from String  to DateFormatter
+                    guard let firstdate = dateFormatterFrom.date(from: first) else { return }
+                    
+                    ///Make end date  from String  to DateFormatter
+                    guard let secondDate = dateFormatterFrom.date(from: second) else { return }
+                    
+                    
+                    
+                    let workingInterval = Calendar.current.dateComponents([.year, .month, .day], from: firstdate, to: secondDate)
+                    print("\(idFirst)        \(idSecond)        \(workingInterval)")
+                    
+                    let writeInFile = outpath().appendingPathComponent("results.txt")
+                    do {
+                        try workingInterval.description.write(to: writeInFile, atomically: true, encoding: .utf8)
+                    }
+                    catch {
+                        print(error.localizedDescription)
+                    }
+                }
             }
+        } else {
+            print("end")
         }
-
     }
 }
+
+// MARK: Declarations
+
+
+    
+    /// Get file path for
+    func outpath() -> URL {
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return path[0]
+    }
 
