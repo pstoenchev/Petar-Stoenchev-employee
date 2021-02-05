@@ -109,8 +109,9 @@ extension ViewController {
                     print(error.localizedDescription)
                 }
             } else {
-                print(sortedDaysOfWorking.sorted { $0 < $1 })
-                workingTimeLabel.text = String(sortedDaysOfWorking.last ?? 0)
+               // print(sortedDaysOfWorking.sorted { $0 < $1 })
+                let days = sortedDaysOfWorking.sorted {  $0 < $1 }
+                workingTimeLabel.text = String(days.last ?? 0)
             }
         }
     } catch {
